@@ -1,14 +1,18 @@
 <?php
-
-ini_set('include_path', ini_get('include_path') . PATH_SEPARATOR . '.');
+//require_once 'includes/debugbar.php';
+require_once 'includes/debugbar_config.php';
 require_once 'includes/config.php';
-?>
 
+// Example: Add a message to DebugBar
+$debugbar["messages"]->addMessage("Hello inside index!");
+
+?>
 
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<?php echo $debugbarRenderer->renderHead() ?>
     <meta charset="UTF-8">
     <title>Welcome to CodeTracker</title>
     <style>
@@ -50,13 +54,20 @@ require_once 'includes/config.php';
             background-color: #0056b3;
         }
     </style>
+
 </head>
 <body>
+    
+
     <div class="container">
         <h1>Welcome to CodeTracker</h1>
         <p>A simple project and task tracker application.</p>
         <a href="register.php" class="btn">Register</a>
         <a href="login.php" class="btn">Login</a>
+
+        <?php $debugbar["messages"]->addMessage("Hello login check!");?>
+
+        <?php echo $debugbarRenderer->render() ?>
     </div>
 </body>
 </html>

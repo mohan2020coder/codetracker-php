@@ -4,7 +4,7 @@
     "license": "Apache-2.0",
     "require": {
         "mongodb/mongodb": "^1.6",
-        "barryvdh/laravel-debugbar": "^3.7"
+        "maximebf/debugbar": "^1.22"
     },
     "authors": [
         {
