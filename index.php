@@ -1,86 +1,62 @@
 <?php
-// Enable error reporting
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 
-require 'vendor/autoload.php'; // Include Composer autoload file
-
-// Connect to MongoDB
-try {
-    $client = new MongoDB\Client("mongodb://localhost:27017");
-
-    // Select a database and collection
-    $db = $client->todo_db;
-    $collection = $db->tasks;
-
-    // Handle form submissions
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        if (isset($_POST['action'])) {
-            switch ($_POST['action']) {
-                case 'add':
-                    $task = ['task' => $_POST['task'], 'status' => 'incomplete'];
-                    $collection->insertOne($task);
-                    break;
-                case 'update':
-                    $id = new MongoDB\BSON\ObjectId($_POST['id']);
-                    $collection->updateOne(
-                        ['_id' => $id],
-                        ['$set' => ['task' => $_POST['task'], 'status' => $_POST['status']]]
-                    );
-                    break;
-                case 'delete':
-                    $id = new MongoDB\BSON\ObjectId($_POST['id']);
-                    $collection->deleteOne(['_id' => $id]);
-                    break;
-            }
-        }
-    }
-
-    // Fetch all tasks
-    $tasks = $collection->find();
-
-} catch (MongoDB\Driver\Exception\Exception $e) {
-    die("Failed to connect to MongoDB: " . $e->getMessage());
-}
+ini_set('include_path', ini_get('include_path') . PATH_SEPARATOR . '.');
+require_once 'includes/config.php';
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>ToDo App</title>
+    <title>Welcome to CodeTracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            text-align: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+        h1 {
+            color: #333;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px;
+            text-decoration: none;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    <h1>ToDo App</h1>
-
-    <form method="post" action="">
-        <input type="hidden" name="action" value="add">
-        <input type="text" name="task" placeholder="New Task">
-        <button type="submit">Add Task</button>
-    </form>
-
-    <h2>Tasks</h2>
-    <ul>
-        <?php foreach ($tasks as $task): ?>
-            <li>
-                <form method="post" action="" style="display: inline;">
-                    <input type="hidden" name="id" value="<?php echo $task['_id']; ?>">
-                    <input type="hidden" name="action" value="update">
-                    <input type="text" name="task" value="<?php echo htmlspecialchars($task['task'], ENT_QUOTES); ?>">
-                    <select name="status">
-                        <option value="incomplete" <?php echo $task['status'] == 'incomplete' ? 'selected' : ''; ?>>Incomplete</option>
-                        <option value="complete" <?php echo $task['status'] == 'complete' ? 'selected' : ''; ?>>Complete</option>
-                    </select>
-                    <button type="submit">Update</button>
-                </form>
-                <form method="post" action="" style="display: inline;">
-                    <input type="hidden" name="id" value="<?php echo $task['_id']; ?>">
-                    <input type="hidden" name="action" value="delete">
-                    <button type="submit">Delete</button>
-                </form>
-            </li>
-        <?php endforeach; ?>
-    </ul>
+    <div class="container">
+        <h1>Welcome to CodeTracker</h1>
+        <p>A simple project and task tracker application.</p>
+        <a href="register.php" class="btn">Register</a>
+        <a href="login.php" class="btn">Login</a>
+    </div>
 </body>
 </html>

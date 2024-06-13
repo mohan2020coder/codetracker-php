@@ -3,7 +3,8 @@
     "description": "this is to check the connectivity of the mongodb in php.",
     "license": "Apache-2.0",
     "require": {
-        "mongodb/mongodb": "^1.6"
+        "mongodb/mongodb": "^1.6",
+        "barryvdh/laravel-debugbar": "^3.7"
     },
     "authors": [
         {
