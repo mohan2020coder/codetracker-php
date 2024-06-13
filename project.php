@@ -88,13 +88,17 @@ ob_start();
     .task-item {
         margin-bottom: 10px;
     }
+
+    .task-form{
+        display: inline;
+    }
 </style>
 
 <h1><?php echo htmlspecialchars($project['name'], ENT_QUOTES); ?></h1>
 
 <!-- Form to add new task -->
 <form method="post" action="">
-    <input type="text" name="task_name" placeholder="New Task Name" required>
+    <input type="text" name="task_name" placeholder="New Task Name" class="input"required>
     <button type="submit" class="btn"><i class="fas fa-plus"></i> Add Task</button>
 </form>
 
