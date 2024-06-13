@@ -21,8 +21,8 @@ $pageTitle = 'Login - CodeTracker';
 $content = '
    <h1>Login</h1>
     <form method="post" action="">
-        <input type="email" name="email" placeholder="Email"  class="btn" required>
-        <input type="password" name="password" placeholder="Password" class="btn" required>
+        <input type="email" name="email" placeholder="Email"  class="input" required>
+        <input type="password" name="password" placeholder="Password" class="input" required>
         <br/>
         <button type="submit" class="btn">Login</button>
 

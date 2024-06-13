@@ -4,7 +4,7 @@
 <?php
 require_once 'includes/config.php';
 require_once 'includes/debugbar_config.php'; 
-
+require_once 'vendor/autoload.php';
 ?>
 
 <!DOCTYPE html>
@@ -48,6 +48,17 @@ require_once 'includes/debugbar_config.php';
             border-radius: 4px;
             cursor: pointer;
             transition: background-color 0.3s;
+        }
+
+        .input {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px;
+            text-decoration: none;
+            border: #007bff solid 1px;
+            border-radius: 4px;
+            cursor: pointer;
+           
         }
         .btn:hover {
             background-color: #0056b3;
