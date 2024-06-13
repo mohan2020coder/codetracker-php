@@ -1,5 +1,5 @@
-<?php
 
+<?php
 require 'includes/functions.php';
 
 
@@ -8,28 +8,36 @@ if (!isLoggedIn()) {
     exit();
 }
 
-$projects = $db->projects->find(['user_id' => new MongoDB\BSON\ObjectId($_SESSION['user_id'])]);
+try {
+    $projectsCursor = $db->projects->find(['user_id' => new MongoDB\BSON\ObjectId($_SESSION['user_id'])]);
+    $projects = iterator_to_array($projectsCursor);
+} catch (Exception $e) {
+    $debugbar["messages"]->addMessage("Error fetching projects: " . $e->getMessage());
+    die("Error fetching projects: " . $e->getMessage());
+}
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $projectName = $_POST['project_name'];
-    $db->projects->insertOne([
-        'user_id' => new MongoDB\BSON\ObjectId($_SESSION['user_id']),
-        'name' => $projectName
-    ]);
-    header('Location: dashboard.php');
-    exit();
+    try {
+        $db->projects->insertOne([
+            'user_id' => new MongoDB\BSON\ObjectId($_SESSION['user_id']),
+            'name' => $projectName
+        ]);
+        header('Location: dashboard.php');
+        exit();
+    } catch (Exception $e) {
+        $debugbar["messages"]->addMessage("Error inserting project: " . $e->getMessage());
+        die("Error inserting project: " . $e->getMessage());
+    }
 }
-?>
-
-<?php 
 
 $pageTitle = 'Dashboard - CodeTracker';
 
-$content = <<<HTML
+ob_start();
+?>
 
 <style>
-
-    ul{
+    ul {
         list-style: none;
         padding: 0;
     }
@@ -41,35 +49,27 @@ $content = <<<HTML
 </form>
 <h2>Your Projects</h2>
 <ul>
-    <?php foreach (\$projects as \$project): ?>
+    <?php foreach ($projects as $project): ?>
         <li>
-            <a href="project.php?id=<?php echo \$project['_id']; ?>">
-                <?php echo htmlspecialchars(\$project['name'], ENT_QUOTES); ?>
+            <a href="project.php?id=<?php echo $project['_id']; ?>">
+                <?php echo htmlspecialchars($project['name'], ENT_QUOTES); ?>
             </a>
         </li>
     <?php endforeach; ?>
 </ul>
-<a href="logout.php"  class="input" >Logout</a>
-HTML;
+<a href="logout.php" class="input">Logout</a>
 
+<?php
+$content = ob_get_clean();
 
-// Output the base template with defined content
 include 'base_template.php';
-?>
 
-<?php 
-
-// Add messages to DebugBar if conditions are met
 if (isset($projectName)) {
-    $debugbar["messages"]->addMessage("$projects" +"no data");
+    $debugbar["messages"]->addMessage("New project added: $projectName");
 }
-
-
-
 ?>
+
 
 <?php
 include 'footer.php';
 ?>
-
-
