@@ -1,6 +1,10 @@
 <?php
 require 'config.php';
 
+
+// Start session
+session_start();
+
 function registerUser($email, $password) {
     global $db;
     $users = $db->users;

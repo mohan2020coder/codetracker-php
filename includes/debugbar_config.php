@@ -1,7 +1,7 @@
 <?php
 // debugbar_config.php
 
-require_once 'vendor/autoload.php'; // Adjust the path as per your project structure
+//require_once 'vendor/autoload.php'; // Adjust the path as per your project structure
 
 use DebugBar\StandardDebugBar;
 
